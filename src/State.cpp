@@ -2,10 +2,11 @@
 
 #include <numeric>
 
-State::State(unsigned int n)
-	: m_N(n), m_Psi(size_t(1) << n, Complex(0.0))
+State::State(unsigned int n, unsigned int init)
+	: m_N(n), m_Psi()
 {
-	m_Psi[0] = Complex(1.0, 0.0);
+	m_Psi = Vector::Constant(size_t(1) << n, Complex(0.0));
+	m_Psi[init] = Complex(1.0, 0.0);
 }
 
 Real State::ProbSum() const
@@ -16,6 +17,7 @@ Real State::ProbSum() const
 
 void State::ApplyMatrix(const Matrix& m, const std::vector<unsigned int>& qubits)
 {
+	/*
 	Vector v;
 	v.resize(m_Psi.size());
 	for (unsigned int i = 0; i < v.size(); i++)
@@ -24,14 +26,30 @@ void State::ApplyMatrix(const Matrix& m, const std::vector<unsigned int>& qubits
 	}
 
 	std::cout << v << std::endl;
+	*/
 
-	const Vector u = m * v;
-	std::cout << u << std::endl;
+	m_Psi = m * m_Psi;
 
+	/*
 	for (unsigned int i = 0; i < u.size(); i++)
 	{
 		m_Psi[i] = u[i];
 	}
+	*/
+}
+
+unsigned int State::Collapse()
+{
+	Real s = 0.0;
+
+	for (unsigned int i = 0; i < m_Psi.size(); i++)
+	{
+
+	}
+
+	// this point should not get reached,
+	// as long as the probability sum is 1
+	return 0;
 }
 
 

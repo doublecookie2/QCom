@@ -1,6 +1,7 @@
 #pragma once
 
 #include <vector>
+#include <string>
 
 #include <iostream>
 #include <ostream>
@@ -9,16 +10,14 @@
 
 #include "Types.h"
 
-
-
 class State
 {
 private:
 	unsigned int m_N;
-	std::vector<Complex> m_Psi;
+	Vector m_Psi;
 
 public:
-	State(unsigned int n);
+	State(unsigned int n, unsigned int init = 0);
 
 	Real Prob(const Complex c) const
 	{
@@ -28,6 +27,7 @@ public:
 
 	void ApplyMatrix(const Matrix& u, const std::vector<unsigned int>& qubits);
 
+	unsigned int Collapse();
 public:
 	friend std::ostream& operator<< (std::ostream& os, const State& s);
 };
