@@ -25,7 +25,7 @@ public:
 	}
 	Real ProbSum() const;
 
-	void ApplyMatrix(const Matrix& u, const std::vector<unsigned int>& qubits);
+	void ApplyMatrix(const Matrix& m);
 
 	unsigned int Collapse();
 public:

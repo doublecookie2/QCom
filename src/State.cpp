@@ -5,7 +5,7 @@
 State::State(unsigned int n, unsigned int init)
 	: m_N(n), m_Psi()
 {
-	m_Psi = Vector::Constant(size_t(1) << n, Complex(0.0));
+	m_Psi = Vector::Constant(static_cast<size_t>(1) << n, Complex(0.0));
 	m_Psi[init] = Complex(1.0, 0.0);
 }
 
@@ -15,27 +15,9 @@ Real State::ProbSum() const
 		[this](Real s, Complex c) { return s + Prob(c); });
 }
 
-void State::ApplyMatrix(const Matrix& m, const std::vector<unsigned int>& qubits)
+void State::ApplyMatrix(const Matrix& m)
 {
-	/*
-	Vector v;
-	v.resize(m_Psi.size());
-	for (unsigned int i = 0; i < v.size(); i++)
-	{
-		v[i] = m_Psi[i];
-	}
-
-	std::cout << v << std::endl;
-	*/
-
 	m_Psi = m * m_Psi;
-
-	/*
-	for (unsigned int i = 0; i < u.size(); i++)
-	{
-		m_Psi[i] = u[i];
-	}
-	*/
 }
 
 unsigned int State::Collapse()
@@ -51,7 +33,6 @@ unsigned int State::Collapse()
 	// as long as the probability sum is 1
 	return 0;
 }
-
 
 
 std::ostream& operator<<(std::ostream& os, const State& s)

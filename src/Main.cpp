@@ -2,6 +2,32 @@
 
 #include "State.h"
 
+Matrix KroneckerProduct(const Matrix& a, const Matrix& b)
+{
+	const unsigned int ar = a.rows();
+	const unsigned int ac = a.cols();
+	const unsigned int br = b.rows();
+	const unsigned int bc = b.cols();
+
+	Matrix c(ar * br, ac * bc);
+
+	for (unsigned int i = 0; i < ar; i++)
+	{
+		for (unsigned int j = 0; j < ac; j++)
+		{
+			for (unsigned int k = 0; k < br; k++)
+			{
+				for (unsigned int l = 0; l < bc; l++)
+				{
+					c(i * br + l, j * bc + k) = a(i, j) * b(k, l);
+				}
+			}
+		}
+	}
+
+	return c;
+}
+
 int main()
 {
 	// std complex test
@@ -19,32 +45,40 @@ int main()
 
 	std::cout << m << std::endl;
 
-	/*
 	{
 		// state test
-		State s (4, 0b1010);
+		State s (2, 0b00);
 		std::cout << s << std::endl;
 
-		std::cout << "Applying Hadamard operation\n" << std::endl;
+		std::cout << "Applying Hadamard gate\n" << std::endl;
 		Matrix h (2, 2);
 		h(0, 0) =  1.0;
 		h(0, 1) =  1.0;
 		h(1, 0) =  1.0;
 		h(1, 1) = -1.0;
-
 		h = h * (1.0 / std::sqrt(2.0));
-		std::cout << "h:\n" << h << std::endl;
 
-		s.ApplyMatrix(h, {0});
-		std::cout << s << std::endl;
-		s.ApplyMatrix(h, {1});
-		std::cout << s << std::endl;
 
+		const Matrix i = Matrix::Identity(2, 2);
+
+		const Matrix h0 = KroneckerProduct(h, i);
+		const Matrix h1 = KroneckerProduct(i, h);
+
+		//std::cout << "h:\n" << h << std::endl;
+		std::cout << "h0:\n" << h0 << std::endl;
+		std::cout << "h1:\n" << h1 << std::endl;
+
+
+		//s.ApplyMatrix(h0);
+		//std::cout << s << std::endl;
+
+		s.ApplyMatrix(h1);
+		std::cout << s << std::endl;
 	}
-	*/
+	
 
 	{
-		//std::cout << "Applying NAND\n" << std::endl;
+		std::cout << "Applying NAND\n" << std::endl;
 		State s (3, 0b000);
 	
 		Matrix nand = Matrix::Constant(1 << 3, 1 << 3, Complex(0.0));
@@ -62,7 +96,7 @@ int main()
 
 		//std::cout << "NAND:\n" << nand << std::endl;
 
-		s.ApplyMatrix(nand, {0, 1, 2});
+		s.ApplyMatrix(nand);
 		std::cout << s << std::endl;
 	}
 
