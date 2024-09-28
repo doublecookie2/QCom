@@ -5,14 +5,14 @@ Circuit::Circuit(unsigned int n)
 {
 }
 
-void Circuit::Add(const Gate& gate)
+void Circuit::Add(Gate* gate)
 {
-	m_Gates.push(gate);
+	m_Gates.emplace(gate);
 }
 
 void Circuit::Step()
 {
-	ApplyMatrix(m_Gates.front().GetMatrix());
+	ApplyMatrix(m_Gates.front()->GetMatrix(m_N));
 	m_Gates.pop();
 }
 

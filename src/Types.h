@@ -12,4 +12,4 @@ using Complex	= std::complex<double>;
 using Matrix	= Eigen::Matrix<Complex, Eigen::Dynamic, Eigen::Dynamic>;
 using Vector	= Eigen::Vector<Complex, Eigen::Dynamic>;
 
-#define POW_2(n) (1 << n)
+#define POW_2(n) (static_cast<size_t>(1) << static_cast<size_t>(n))
