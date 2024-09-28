@@ -3,9 +3,8 @@
 #include "State.h"
 #include "KroneckerProduct.h"
 
-namespace Gate
 {
-	Matrix Hadamard(unsigned int n, unsigned int i)
+	Matrix Hadamard(const unsigned int n, const unsigned int i)
 	{
 		if (n == 1)
 		{
@@ -37,6 +36,39 @@ namespace Gate
 			return r;
 		}
 	}
+
+	/*
+	Flips the t-th bit (target bit) if the c-th bit (control bit) is set
+	00 -> 00
+	01 -> 01
+	10 -> 11
+	11 -> 10
+	*/
+	Matrix CNOT(const unsigned int n, const unsigned int c, const unsigned int t)
+	{
+		Matrix m = Matrix::Constant(POW_2(n), POW_2(n), 0.0);
+
+		for (unsigned int i = 0; i < POW_2(n); i++)
+		{
+			if (bool(i & (1 << c)))
+			{
+				m(i, i ^ (1 << t)) = 1;
+			}
+			else
+			{
+				m(i, i) = 1;
+			}
+		}
+		
+		std::cout << m << std::endl;
+
+		return m;
+	}
+
+	Matrix Bell(const unsigned int n, const unsigned int a, const unsigned int b)
+	{
+		return CNOT(n, a, b) * Hadamard(n, a);
+	}
 }
 
 int main()
@@ -48,7 +80,7 @@ int main()
 	//Complex c = std::sqrt(0.5) + 1i * std::sqrt(0.5);
 	//std::cout << "c: " << c << std::endl;
 
-	if (true)
+	if (false)
 	{
 		// hadamard gate test
 		
@@ -63,12 +95,12 @@ int main()
 				{
 					std::cout << "\nn: " << n << ", i: " << i << ", j: " << j << "\n";
 
+					const State s0 (n, i);
 					State s (n, i);
+
 					s.ApplyMatrix(Gate::Hadamard(n, j));
 					
-					// verify
 					const Real p = s.ProbSum();
-
 					if (std::abs(p - 1.0) > 0.05)
 					{
 						std::cout << "Warning: Probability sum is not equal to 1, p: " << p << std::endl;
@@ -82,11 +114,50 @@ int main()
 						std::cout << "Warning: p0 and / or p1 are not equal to 1/2. p0: " << p0 << ", " << p1 << std::endl;
 						std::cout << s << std::endl;
 					}
+
+					// check that the remaining qubits are unchanged
+					for (unsigned int l = 0; l < n; l++)
+					{
+						if (l == j) continue;
+
+						for (bool b : {true, false})
+						{
+							if (std::abs(s0.SingleQubitProb(l, b) - s.SingleQubitProb(l, b)) > 0.05)
+							{
+								std::cout << "Warning: Other qubits probability was changed!\n";
+								std::cout << "Before:" << s0 << "\nAfter:\n" << s << std::endl;
+							}
+						}
+					}
 				}
 			}
 		}
 	}
 	
+	if (false)
+	{
+		std::cout << "Applying CNOT\n" << std::endl;
+
+		State s (2, 0b11);
+		s.ApplyMatrix(Gate::CNOT(s.N(), 0, 1));
+		std::cout << s << std::endl;
+	}
+
+	if (true)
+	{
+		std::cout << "Bell state\n" << std::endl;
+		
+		State s (2, 0b00);
+
+		s.ApplyMatrix(Gate::Hadamard(s.N(), 0));
+		s.ApplyMatrix(Gate::CNOT(s.N(), 1, 0));
+
+		//s.ApplyMatrix(Gate::Bell(s.N(), 0, 1));
+
+		std::cout << s << std::endl;
+	}
+
+
 	if (false)
 	{
 		std::cout << "Applying NAND\n" << std::endl;

@@ -15,7 +15,7 @@ Real State::ProbSum() const
 		[this](Real s, Complex c) { return s + Prob(c); });
 }
 
-Real State::SingleQubitProb(unsigned int i, bool b)
+Real State::SingleQubitProb(unsigned int i, bool b) const
 {
 	Real s = 0.0;
 	for (unsigned int j = 0; j < m_Psi.size(); j++)

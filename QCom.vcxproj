@@ -139,14 +139,21 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="src\Circuit.cpp" />
+    <ClCompile Include="src\Gates.cpp" />
     <ClCompile Include="src\Main.cpp" />
     <ClCompile Include="src\KroneckerProduct.cpp" />
     <ClCompile Include="src\State.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="src\Circuit.h" />
+    <ClInclude Include="src\Gates.h" />
     <ClInclude Include="src\KroneckerProduct.h" />
     <ClInclude Include="src\State.h" />
     <ClInclude Include="src\Types.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="cpp.hint" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

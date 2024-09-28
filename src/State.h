@@ -13,6 +13,8 @@
 class State
 {
 private:
+	friend Circuit;
+
 	unsigned int m_N;
 	Vector m_Psi;
 
@@ -25,6 +27,7 @@ public:
 	}
 
 	Real ProbSum() const;
+	Real SingleQubitProb(unsigned int i, bool b = true) const;
 
 	void ApplyMatrix(const Matrix& m);
 	void Observe(const unsigned int n = 1);
@@ -37,7 +40,7 @@ public:
 		return Prob(m_Psi[i]);
 	}
 
-	Real SingleQubitProb(unsigned int i, bool b = true);
+	inline unsigned int N() const { return m_N; }
 
 public:
 	void CollapseTo(const unsigned int result);

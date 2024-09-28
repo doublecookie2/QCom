@@ -1,3 +1,4 @@
+#pragma once
 
 // https://en.cppreference.com/w/cpp/numeric/complex
 #include <complex>
