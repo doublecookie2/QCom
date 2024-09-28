@@ -140,9 +140,11 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="src\Main.cpp" />
+    <ClCompile Include="src\KroneckerProduct.cpp" />
     <ClCompile Include="src\State.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="src\KroneckerProduct.h" />
     <ClInclude Include="src\State.h" />
     <ClInclude Include="src\Types.h" />
   </ItemGroup>

@@ -5,7 +5,7 @@
 State::State(unsigned int n, unsigned int init)
 	: m_N(n), m_Psi()
 {
-	m_Psi = Vector::Constant(static_cast<size_t>(1) << n, Complex(0.0));
+	m_Psi = Vector::Constant(POW_2(size_t(n)), Complex(0.0));
 	m_Psi[init] = Complex(1.0, 0.0);
 }
 
@@ -20,13 +20,35 @@ void State::ApplyMatrix(const Matrix& m)
 	m_Psi = m * m_Psi;
 }
 
-unsigned int State::Collapse()
+void State::Observe(const unsigned int n)
+{
+	for (unsigned int i = 0; i < n; i++)
+	{
+		const auto r = GetWeightedRandom();
+		std::cout << std::format("{:b}, ", r);
+	}
+	std::cout << std::endl;
+}
+
+void State::CollapseTo(const unsigned int result)
+{
+	m_Psi.setZero();
+	m_Psi[result] = Complex(1.0);
+}
+
+unsigned int State::GetWeightedRandom()
 {
 	Real s = 0.0;
+	const Real r = ((Real)rand() / (RAND_MAX));
 
 	for (unsigned int i = 0; i < m_Psi.size(); i++)
 	{
+		s += Prob(m_Psi[i]);
 
+		if (r <= s)
+		{
+			return i;
+		}
 	}
 
 	// this point should not get reached,

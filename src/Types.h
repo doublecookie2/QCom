@@ -10,3 +10,5 @@ using Real		= double;
 using Complex	= std::complex<double>;
 using Matrix	= Eigen::Matrix<Complex, Eigen::Dynamic, Eigen::Dynamic>;
 using Vector	= Eigen::Vector<Complex, Eigen::Dynamic>;
+
+#define POW_2(n) (1 << n)
