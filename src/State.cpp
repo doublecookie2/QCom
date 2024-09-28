@@ -15,6 +15,26 @@ Real State::ProbSum() const
 		[this](Real s, Complex c) { return s + Prob(c); });
 }
 
+Real State::SingleQubitProb(unsigned int i, bool b)
+{
+	Real s = 0.0;
+	for (unsigned int j = 0; j < m_Psi.size(); j++)
+	{
+		// could be improved from O(m_Psi.size()) to  O(m_Psi.size() / 2):
+		//const unsigned int lhs	= (j << 1);
+		//const unsigned int rhs	= j;
+		//const unsigned int k	= lhs | (b << i) | rhs;
+
+		if (bool(j & (1 << i)) == b)
+		{
+			s += Prob(j);
+		}
+	}
+
+	return s;
+}
+
+
 void State::ApplyMatrix(const Matrix& m)
 {
 	m_Psi = m * m_Psi;
@@ -29,6 +49,7 @@ void State::Observe(const unsigned int n)
 	}
 	std::cout << std::endl;
 }
+
 
 void State::CollapseTo(const unsigned int result)
 {

@@ -74,22 +74,8 @@ int main()
 						std::cout << "Warning: Probability sum is not equal to 1, p: " << p << std::endl;
 					}
 
-					Real p0 = 0.0;
-					Real p1 = 0.0;
-
-					for (unsigned int k = 0; k < POW_2(n); k++)
-					{
-						const Real pk = s.Prob(k);
-
-						if (k & POW_2(j))
-						{
-							p1 += pk;
-						}
-						else
-						{
-							p0 += pk;
-						}
-					}
+					Real p0 = s.SingleQubitProb(j, false);
+					Real p1 = s.SingleQubitProb(j, true);
 
 					if (std::abs(p0 - 0.5) > 0.05 || std::abs(p1 - 0.5) > 0.05)
 					{
@@ -130,48 +116,3 @@ int main()
 	std::cout << "\nFinished." << std::endl;
 	std::cin.get();
 }
-
-/*
-string state, s; 
-unsigned int r, j; 
-state_map old = copy_map(states); 
-amp c;
-
-for (state_map::iterator i = old.begin(); i != old.end(); ++i) {
-	//! Iterate psi
-	
-	state = i->first; s = "";
-	
-	//! s represents the states of qubits that the operation is going to be applied on
-	for (unsigned int q : qubits)
-		s += state[q];
-
-	// Find which number basis element s corresponds to.
-	r = binary_to_base10(s)
-
-
-	for (j = 0; j < qubits.size(); j++)
-	{
-		if (j == r)
-		{
-			// set main diagonal
-			states[state] -= (1.0 - u[j][r]) * old[state];
-		}
-		else
-		{
-			// set everything apart from the main diagonal
-			string n = state;
-
-			// j (int) -> k (string)
-			// r (int) -> s (string)
-
-			string k = binary_to_base10(j);
-			for (unsigned int l = 0; l < k.size(); l++)
-				n[qubits[l]] = k[l];
-
-			states[n] += u[j][r] * old[state];
-		}
-	}
-}
-
-*/

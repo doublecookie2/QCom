@@ -37,10 +37,7 @@ public:
 		return Prob(m_Psi[i]);
 	}
 
-	Real SingleQubitProb()
-	{
-
-	}
+	Real SingleQubitProb(unsigned int i, bool b = true);
 
 public:
 	void CollapseTo(const unsigned int result);
