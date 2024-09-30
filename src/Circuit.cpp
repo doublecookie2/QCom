@@ -1,7 +1,7 @@
 #include "Circuit.h"
 
-Circuit::Circuit(unsigned int n)
-	: State(n), m_Gates()
+Circuit::Circuit(unsigned int n, unsigned int init)
+	: State(n, init), m_Gates()
 {
 }
 
