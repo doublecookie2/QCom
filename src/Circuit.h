@@ -12,7 +12,7 @@ class Circuit
 private:
 	std::queue<std::unique_ptr<Gate>> m_Gates;
 public:
-	Circuit(unsigned int n);
+	Circuit(unsigned int n, unsigned int init = 0);
 
 	void Add(Gate* gate);
 	void Step();
